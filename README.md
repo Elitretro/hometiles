@@ -120,6 +120,10 @@ away, and asks for no account.
 
 ## Install
 
+<a href="https://f-droid.org/en/packages/dev.kicker.hometiles/">
+  <img alt="Get it on F-Droid" src="https://f-droid.org/badge/get-it-on.png" height="80">
+</a>
+
 HomeTiles is on [F-Droid](https://f-droid.org/en/packages/dev.kicker.hometiles/). The app
 runs on Android 8 (API 26) and above; it is developed against Android 11 on the target device.
 
