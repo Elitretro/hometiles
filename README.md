@@ -10,6 +10,9 @@
   <a href="https://github.com/timkicker/hometiles/actions/workflows/ci.yml">
     <img alt="CI" src="https://img.shields.io/github/actions/workflow/status/timkicker/hometiles/ci.yml?branch=main&label=ci">
   </a>
+  <a href="https://f-droid.org/en/packages/dev.kicker.hometiles/">
+    <img alt="F-Droid" src="https://img.shields.io/f-droid/v/dev.kicker.hometiles">
+  </a>
   <a href="LICENSE">
     <img alt="License" src="https://img.shields.io/badge/license-GPLv3-blue.svg">
   </a>
@@ -117,11 +120,11 @@ away, and asks for no account.
 
 ## Install
 
-There is **no release yet**. The app runs on Android 8 (API 26) and above; it is developed
-against Android 11 on the target device.
+HomeTiles is on [F-Droid](https://f-droid.org/en/packages/dev.kicker.hometiles/). The app
+runs on Android 8 (API 26) and above; it is developed against Android 11 on the target device.
 
-Until then, build it yourself (see below). Publication on F-Droid is planned, and the
-repository already carries the metadata for it under `fastlane/metadata/`.
+F-Droid builds and signs the app itself, so there is no APK on the GitHub releases. The store
+texts and screenshots it shows come from `fastlane/metadata/`. To build it yourself, see below.
 
 ## Build
 
