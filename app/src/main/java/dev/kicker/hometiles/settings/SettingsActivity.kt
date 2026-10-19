@@ -1,6 +1,9 @@
 package dev.kicker.hometiles.settings
 
 import android.content.Intent
+import dev.kicker.hometiles.ui.theme.LocalCornerRadius
+import androidx.compose.foundation.shape.RoundedCornerShape
+import dev.kicker.hometiles.ui.focusBorder
 import android.os.Bundle
 import android.os.Build
 import androidx.activity.ComponentActivity
@@ -1215,7 +1218,7 @@ private fun ScreenPanel(
                 // so its own tick key takes over.
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { onDone(text) }),
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().focusBorder(RoundedCornerShape(LocalCornerRadius.current)),
             )
         }
         item { BigHeading(stringResource(R.string.screen_grid_heading)) }
@@ -2512,7 +2515,7 @@ private fun CallTypesList(
                 onValueChange = { blockedText = it },
                 placeholder = { Text(stringResource(R.string.blocked_numbers_placeholder), fontSize = bigSp(15f)) },
                 textStyle = LocalTextStyle.current.copy(fontSize = bigSp(17f)),
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp).focusBorder(RoundedCornerShape(LocalCornerRadius.current)),
             )
         }
         if (rejected.isNotEmpty()) {

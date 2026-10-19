@@ -130,6 +130,7 @@ private fun PageButton(
             .widthIn(min = 48.dp)
             .clip(RoundedCornerShape(LocalCornerRadius.current))
             .background(if (enabled) surface.fill else surface.fill.copy(alpha = PALE))
+            .focusBorder(RoundedCornerShape(LocalCornerRadius.current))
             .clickable(enabled = enabled, onClick = onClick)
             .semantics { contentDescription = description },
         contentAlignment = Alignment.Center,

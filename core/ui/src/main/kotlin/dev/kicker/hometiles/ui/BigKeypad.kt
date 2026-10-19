@@ -73,7 +73,33 @@ fun BigKeypad(
      * unreachable by key: a named anchor, never a blind search.
      */
     below: FocusRequester? = null,
+    /**
+     * what hardware keys may type beyond the drawn ones. the dialer takes star and pound,
+     * which a keypad phone has printed on it; the pin entry takes digits only.
+     */
+    alsoTyped: Set<Char> = emptySet(),
 ) {
+    // the phone's own keys type as well, wherever the focus is or whether there is one.
+    // a held key repeats on its own, and a repeated digit is not what anybody pressed, so
+    // only the first press counts; delete may repeat.
+    ScreenKeys { event ->
+        val typed = dialChar(event)
+        val drawn = typed != null && (typed.isDigit() || typed == extraKey || typed in alsoTyped)
+        when {
+            drawn -> {
+                if (event.action == android.view.KeyEvent.ACTION_DOWN && event.repeatCount == 0) {
+                    onDigit(typed!!)
+                }
+                true
+            }
+            event.keyCode == android.view.KeyEvent.KEYCODE_DEL -> {
+                if (event.action == android.view.KeyEvent.ACTION_DOWN) onBackspace()
+                true
+            }
+            else -> false
+        }
+    }
+
     val rows = listOf(
         listOf("1", "2", "3"),
         listOf("4", "5", "6"),
@@ -225,6 +251,7 @@ private fun KeypadKey(
             .clip(RoundedCornerShape(LocalCornerRadius.current))
             .background(palette.emptyTile)
             .then(if (border != null) Modifier.border(3.dp, border, RoundedCornerShape(LocalCornerRadius.current)) else Modifier)
+            .focusBorder(RoundedCornerShape(LocalCornerRadius.current))
             .combinedClickable(onClick = onClick, onLongClick = onLongClick)
             .semantics { contentDescription = description },
         contentAlignment = Alignment.Center,

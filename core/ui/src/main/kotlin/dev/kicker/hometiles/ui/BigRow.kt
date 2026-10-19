@@ -157,7 +157,7 @@ fun BigRow(
                 if (onClick == null) {
                     Modifier
                 } else {
-                    Modifier.combinedClickable(
+                    Modifier.focusBorder(RoundedCornerShape(cornerRadius ?: LocalCornerRadius.current), paint.fill).combinedClickable(
                         interactionSource = interaction,
                         indication = null,
                         onClick = { haptics.tap(hapticStrength); onClick() },
@@ -304,6 +304,7 @@ fun BigIconButton(
             .clip(RoundedCornerShape(LocalCornerRadius.current))
             .background(paint.fill)
             .then(if (border != null) Modifier.border(3.dp, border, RoundedCornerShape(LocalCornerRadius.current)) else Modifier)
+            .focusBorder(RoundedCornerShape(LocalCornerRadius.current))
             .clickable(onClick = onClick)
             .semantics { contentDescription = description },
         contentAlignment = Alignment.Center,

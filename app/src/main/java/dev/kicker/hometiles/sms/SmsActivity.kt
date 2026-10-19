@@ -1,6 +1,7 @@
 package dev.kicker.hometiles.sms
 
 import android.Manifest
+import dev.kicker.hometiles.ui.focusBorder
 import androidx.core.content.ContextCompat
 import android.content.pm.PackageManager
 import android.os.Build
@@ -698,7 +699,7 @@ private fun Conversation(
                 value = draft,
                 onValueChange = onDraft,
                 textStyle = TextStyle(fontSize = bigSp(18f)),
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().focusBorder(RoundedCornerShape(LocalCornerRadius.current)),
             )
         }
         val sendButton = @Composable {

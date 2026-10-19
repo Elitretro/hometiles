@@ -68,6 +68,9 @@ import dev.kicker.hometiles.data.SpeedDialTarget
 import dev.kicker.hometiles.ui.ContactAvatar
 import dev.kicker.hometiles.ui.BigHeading
 import dev.kicker.hometiles.ui.BigKeypad
+import dev.kicker.hometiles.ui.ScreenKeys
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import dev.kicker.hometiles.actions.Intents
 import dev.kicker.hometiles.security.Pin
 import dev.kicker.hometiles.ui.PinGate
@@ -549,7 +552,18 @@ private fun Keypad(
                 onLongDigit = onLongDigit,
                 hintFor = hintFor,
                 extraKey = '+',
+                alsoTyped = setOf('*', '#'),
             )
+        }
+        // the green key leads to the call row and does not dial: dialling takes the select
+        // key on it, the same second press a finger needs. `PLAN.md` 10.3.3.
+        val callRow = remember { FocusRequester() }
+        ScreenKeys { event ->
+            if (event.keyCode != android.view.KeyEvent.KEYCODE_CALL) return@ScreenKeys false
+            if (event.action == android.view.KeyEvent.ACTION_DOWN && dialable) {
+                runCatching { callRow.requestFocus() }
+            }
+            true
         }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             BigRow(
@@ -561,7 +575,7 @@ private fun Keypad(
                 // invisible: the row stood in full accent colour, one tapped, and nothing
                 // happened silently. on a keypad that is the row one relies on most.
                 surface = if (dialable) palette.surfaceAccent else palette.surfaceDefault,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f).focusRequester(callRow),
                 onClick = if (dialable) onCall else null,
             )
             // an icon instead of a word: the label broke mid-word as soon as a speed dial

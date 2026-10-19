@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.mutableIntStateOf
 import android.os.Bundle
+import android.view.KeyEvent
 import dev.kicker.hometiles.data.ConfigStore
 import dev.kicker.hometiles.data.Language
 
@@ -29,6 +30,21 @@ abstract class HomeTilesActivity : ComponentActivity() {
      * `Boolean`, because the same value set twice triggers no redraw.
      */
     val resumes = mutableIntStateOf(0)
+
+    /** see [ScreenKeys]. */
+    private val screenKeys = mutableListOf<(KeyEvent) -> Boolean>()
+
+    /** returns the call that takes the handler out again. */
+    fun addScreenKeys(handler: (KeyEvent) -> Boolean): () -> Unit {
+        screenKeys += handler
+        return { screenKeys -= handler }
+    }
+
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        // a copy: a handler may change the screen, and with it the list.
+        if (screenKeys.toList().asReversed().any { it(event) }) return true
+        return super.dispatchKeyEvent(event)
+    }
 
     override fun attachBaseContext(newBase: Context) {
         attachedLanguage = ConfigStore.get(newBase).current.appearance.language

@@ -21,6 +21,8 @@ import dev.kicker.hometiles.apps.AppLock
 import dev.kicker.hometiles.security.Pin
 import dev.kicker.hometiles.sms.SmsRepository
 import dev.kicker.hometiles.ui.bigSp
+import dev.kicker.hometiles.ui.focusBorder
+import androidx.compose.ui.graphics.RectangleShape
 import dev.kicker.hometiles.ui.PinGate
 import dev.kicker.hometiles.ui.SystemBarsEffect
 import java.util.Locale
@@ -966,6 +968,7 @@ private fun HomeRolePrompt(onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .background(palette.surfaceAccent.fill)
+            .focusBorder(RectangleShape)
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 12.dp),
     )
@@ -983,6 +986,7 @@ private fun EditModeBanner(onLeave: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .background(palette.surfaceAccent.fill)
+            .focusBorder(RectangleShape)
             .clickable { onLeave() }
             .padding(horizontal = 16.dp, vertical = 8.dp),
     )

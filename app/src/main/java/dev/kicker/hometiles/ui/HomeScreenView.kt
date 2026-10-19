@@ -250,22 +250,19 @@ fun HomeScreenView(
                             Key.DirectionRight -> move(PadDirection.RIGHT)
                             Key.DirectionUp -> move(PadDirection.UP)
                             Key.DirectionDown -> move(PadDirection.DOWN)
-                            Key.One -> select(1)
-                            Key.Two -> select(2)
-                            Key.Three -> select(3)
-                            Key.Four -> select(4)
-                            Key.Five -> select(5)
-                            Key.Six -> select(6)
-                            Key.Seven -> select(7)
-                            Key.Eight -> select(8)
-                            Key.Nine -> select(9)
                             // the left softkey; the right one is back, which android
                             // already hands to the activity.
                             Key.Menu -> {
                                 focusedCell?.let { onMenu(it.x, it.y) }
                                 true
                             }
-                            else -> false
+                            // the same digits the dialer reads: keypad, numeric pad and
+                            // the alt digits of a full keyboard.
+                            else -> {
+                                val native = key.nativeKeyEvent
+                                val digit = dialCharFor(native.keyCode, native.getUnicodeChar(native.metaState))
+                                if (digit != null && digit in '1'..'9') select(digit - '0') else false
+                            }
                         }
                     }
                 },

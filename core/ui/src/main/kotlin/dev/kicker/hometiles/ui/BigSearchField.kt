@@ -22,6 +22,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.ui.input.pointer.pointerInput
@@ -38,6 +43,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -81,6 +88,28 @@ fun BigSearchField(
     // reader (see BigRow), and this is an input field.
     val caret = remember { FocusRequester() }
     val focus = LocalFocusManager.current
+    var inField by remember { mutableStateOf(false) }
+
+    // the caret is kept here: with a bare string the field put it in front after a change
+    // from outside, and the first letter typed from the list ended up last ("cal" read
+    // "alc"). a change from outside puts it at the end.
+    var field by remember { mutableStateOf(TextFieldValue(value, TextRange(value.length))) }
+    if (field.text != value) field = TextFieldValue(value, TextRange(value.length))
+
+    // a phone with a keyboard types into the search from anywhere on the screen: on the
+    // titan the list has the focus after a scroll, and letters went nowhere. the field
+    // takes the focus with the first letter, the rest then arrives there by itself.
+    val latest by rememberUpdatedState(value)
+    ScreenKeys(enabled = !inField) { event ->
+        val typed = searchCharFor(event.getUnicodeChar(event.metaState), event.isCtrlPressed)
+            ?: return@ScreenKeys false
+        if (event.action == android.view.KeyEvent.ACTION_DOWN) {
+            onValueChange(latest + typed)
+            runCatching { caret.requestFocus() }
+        }
+        true
+    }
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -90,6 +119,8 @@ fun BigSearchField(
                 detectTapGestures { caret.requestFocus() }
             }
             .then(if (border != null) Modifier.border(3.dp, border, RoundedCornerShape(LocalCornerRadius.current)) else Modifier)
+            // the field is an input and no button, so it carries the border by hand.
+            .then(if (inField) Modifier.border(FOCUS_BORDER_DP.dp, palette.onBackground, RoundedCornerShape(LocalCornerRadius.current)) else Modifier)
             .heightIn(min = 64.dp)
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -111,8 +142,11 @@ fun BigSearchField(
                 )
             }
             BasicTextField(
-                value = value,
-                onValueChange = onValueChange,
+                value = field,
+                onValueChange = { edited ->
+                    field = edited
+                    if (edited.text != value) onValueChange(edited.text)
+                },
                 singleLine = true,
                 textStyle = TextStyle(
                     color = palette.onBackground,
@@ -126,6 +160,7 @@ fun BigSearchField(
                 // placeholder is not a label to it.
                 modifier = Modifier
                     .fillMaxWidth()
+                    .onFocusChanged { inField = it.isFocused }
                     .focusRequester(caret)
                     .onPreviewKeyEvent { event ->
                         if (event.type != KeyEventType.KeyDown) {
@@ -174,6 +209,7 @@ fun BigSearchField(
                 modifier = Modifier
                     .size(48.dp)
                     .clip(RoundedCornerShape(LocalCornerRadius.current))
+                    .focusBorder(RoundedCornerShape(LocalCornerRadius.current))
                     .clickable { onValueChange("") }
                     .semantics { contentDescription = clear },
                 contentAlignment = Alignment.Center,

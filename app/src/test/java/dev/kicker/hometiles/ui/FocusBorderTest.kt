@@ -21,11 +21,15 @@ class FocusBorderTest {
 
     private val source = Quelltext.withoutComments("dev/kicker/hometiles/ui/BigTile.kt")
 
+    // the focus border is shared with rows and keys since 19.10.2026 and lives in core:ui.
+    private val focusSource = Quelltext.withoutComments("dev/kicker/hometiles/ui/KeyFocus.kt")
+
     private fun number(name: String): Float {
         val hit = Regex("""$name\s*=\s*([0-9.]+)f""").find(source)
+            ?: Regex("""$name\s*=\s*([0-9.]+)f""").find(focusSource)
             ?: throw AssertionError(
-                "the constant $name is gone from BigTile.kt. without it this rule measures " +
-                    "nothing and would stay green.",
+                "the constant $name is gone from BigTile.kt and KeyFocus.kt. without it " +
+                    "this rule measures nothing and would stay green.",
             )
         return hit.groupValues[1].toFloat()
     }
@@ -96,7 +100,9 @@ class FocusTrapTest {
 
     @Test
     fun `every direction key is consumed`() {
-        val place = Quelltext.cut(source, ".onPreviewKeyEvent { key ->", "else -> false")
+        // up to the softkey: the digits behind it run through the shared mapping since
+        // 19.10.2026 and end in a block of their own, no longer in `else -> false`.
+        val place = Quelltext.cut(source, ".onPreviewKeyEvent { key ->", "Key.Menu")
         listOf("DirectionLeft", "DirectionRight", "DirectionUp", "DirectionDown").forEach {
             assertTrue(
                 "Key.$it is not handled. a direction key slipping through lets compose look " +

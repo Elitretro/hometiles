@@ -1,6 +1,9 @@
 package dev.kicker.hometiles.sms
 
 import androidx.compose.foundation.layout.Arrangement
+import dev.kicker.hometiles.ui.theme.LocalCornerRadius
+import androidx.compose.foundation.shape.RoundedCornerShape
+import dev.kicker.hometiles.ui.focusBorder
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -179,7 +182,7 @@ internal fun MessagesSettingsList(
                 onValueChange = { numbersText = it },
                 placeholder = { Text(stringResource(R.string.blocked_numbers_placeholder), fontSize = bigSp(15f)) },
                 textStyle = LocalTextStyle.current.copy(fontSize = bigSp(17f)),
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp).focusBorder(RoundedCornerShape(LocalCornerRadius.current)),
             )
         }
         item {
@@ -196,7 +199,7 @@ internal fun MessagesSettingsList(
                 onValueChange = { wordsText = it },
                 placeholder = { Text(stringResource(R.string.sms_filter_words_placeholder), fontSize = bigSp(15f)) },
                 textStyle = LocalTextStyle.current.copy(fontSize = bigSp(17f)),
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp).focusBorder(RoundedCornerShape(LocalCornerRadius.current)),
             )
         }
         item {

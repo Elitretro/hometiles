@@ -47,6 +47,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.CropFree
 import androidx.compose.material.icons.filled.Folder
 import dev.kicker.hometiles.ui.bigSp
+import dev.kicker.hometiles.ui.focusBorder
 import dev.kicker.hometiles.ui.theme.LocalCornerRadius
 import dev.kicker.hometiles.ui.theme.LocalIconVisibility
 import dev.kicker.hometiles.ui.HomeTilesActivity
@@ -1156,7 +1157,7 @@ private fun LabelEditor(
             // done button entirely.
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { onDone(text) }),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().focusBorder(RoundedCornerShape(LocalCornerRadius.current)),
         )
         Text(
             text = stringResource(hintRes),
@@ -1200,6 +1201,7 @@ private fun ColorPicker(selected: Int, hue: Float?, onPick: (Int?) -> Unit, onFr
                                 Modifier
                             },
                         )
+                        .focusBorder(RoundedCornerShape(LocalCornerRadius.current))
                         .clickable { onPick(index) }
                         .semantics {
                             contentDescription = name
@@ -1290,6 +1292,7 @@ private fun IconPicker(selected: String?, onPick: (String?) -> Unit) {
                                         Modifier
                                     },
                                 )
+                                .focusBorder(RoundedCornerShape(LocalCornerRadius.current))
                                 .clickable { onPick(name) }
                                 .semantics {
                                     if (picked) {
@@ -1369,6 +1372,7 @@ private fun HuePicker(selected: Float?, onPick: (Float) -> Unit) {
                                         Modifier
                                     },
                                 )
+                                .focusBorder(RoundedCornerShape(LocalCornerRadius.current))
                                 .clickable { onPick(hue) }
                                 .semantics {
                                     contentDescription = name
@@ -1908,7 +1912,7 @@ private fun NumberEditor(initial: String, onDone: (String) -> Unit) {
                 imeAction = ImeAction.Done,
             ),
             keyboardActions = KeyboardActions(onDone = { onDone(text) }),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().focusBorder(RoundedCornerShape(LocalCornerRadius.current)),
         )
         Text(
             text = stringResource(R.string.message_number_hint),
@@ -1947,7 +1951,7 @@ private fun LinkEditor(initial: String, onDone: (String) -> Unit) {
                 imeAction = ImeAction.Done,
             ),
             keyboardActions = KeyboardActions(onDone = { onDone(text) }),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().focusBorder(RoundedCornerShape(LocalCornerRadius.current)),
         )
         Text(
             text = stringResource(R.string.link_hint),

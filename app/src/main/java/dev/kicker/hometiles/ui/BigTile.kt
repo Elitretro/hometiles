@@ -74,11 +74,7 @@ import dev.kicker.hometiles.a11y.TileSpeech
  */
 private const val BADGE_BORDER_DP = 2f
 
-/**
- * width of the focus border, clearly more than [BADGE_BORDER_DP] so two borders on one
- * screen do not look alike while pointing at different things.
- */
-private const val FOCUS_BORDER_DP = 8f
+// the focus border, [FOCUS_BORDER_DP], lives in core:ui with the one for rows and keys.
 
 /**
  * a tile in the sign design (`PLAN.md` 3.0): full colour to the edge, a large icon top

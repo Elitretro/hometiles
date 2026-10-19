@@ -1,6 +1,9 @@
 package dev.kicker.hometiles.toggles
 
 import androidx.compose.foundation.layout.Arrangement
+import dev.kicker.hometiles.ui.theme.LocalCornerRadius
+import androidx.compose.foundation.shape.RoundedCornerShape
+import dev.kicker.hometiles.ui.focusBorder
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -90,7 +93,7 @@ internal fun SosSettings(
                 supportingText = {
                     Text(stringResource(R.string.sos_numbers_hint, SosNumbers.MAX), fontSize = bigSp(15f))
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().focusBorder(RoundedCornerShape(LocalCornerRadius.current)),
             )
         }
         if (rejected.isNotEmpty()) {
@@ -148,7 +151,7 @@ internal fun SosSettings(
                 onValueChange = { messageText = it },
                 textStyle = TextStyle(fontSize = bigSp(18f)),
                 placeholder = { Text(defaultMessage, fontSize = bigSp(17f)) },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().focusBorder(RoundedCornerShape(LocalCornerRadius.current)),
             )
         }
         item {
