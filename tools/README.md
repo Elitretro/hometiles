@@ -8,7 +8,8 @@ from the finished drawn screen, from a phone grown over weeks, or from the git h
 says what it does, what it caught, and where it was wrong before. This page is the index, so
 that the same sentence does not stand in two places and drift apart.
 
-Most need nothing but `adb`. `contrast.py` and `contrast-walk.py` need Pillow, `plurals.py`
+Most need nothing but `adb`. `contrast.py`, `contrast-walk.py`, `focus-visible.py` and
+`keys.py` need Pillow, `plurals.py`
 needs python-babel.
 
 ---
@@ -63,6 +64,20 @@ tools/tap.py <device> scroll <expected-activity> [times] [--up]
 Walks the focus order and reports what is clickable and never gets the focus. **It never
 selects** - only the four direction keys, so it starts nothing, dials nothing and sends
 nothing, and may run on a phone with a SIM in it.
+
+### `tools/focus-visible.py`
+
+Walks the focus down and up and checks on the drawn pixels that a border shows where it is.
+Reachable is not the same as visible. Like unreachable.py it only presses direction keys and
+may run on a phone with a SIM in it. Needs Pillow.
+
+### `tools/keys.py`
+
+Plays every screen through with keys only: the focus walk, digits and star in the dialler
+while nothing has the focus, the green key, letters from a hardware keyboard into a search,
+back to the home screen. **Emulator only**, because it presses select and digits; it refuses
+any other serial and puts the app's configuration back afterwards. Needs Pillow and an AVD
+with `hw.dPad=yes` and `hw.keyboard=yes`.
 
 ### `tools/silent-buttons.py`
 
