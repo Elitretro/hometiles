@@ -158,14 +158,14 @@ Two full rebuilds without the build cache give the same file:
 sha256sum app/build/outputs/apk/release/app-release-unsigned.apk
 ```
 
-Checked on 3 October 2026 with AGP 8.7.3, Gradle 8.11.1 and JDK 21, built twice without the
+Checked on 19 October 2026 with AGP 8.7.3, Gradle 8.11.1 and JDK 21, built twice without the
 build cache, both times
 
 ```
-0f1ae978e637ec5fd21fe4735543f17d68c6925a65f0be913d1264b0457cb035   1 953 891 bytes
+f9ad0e20e00e3258ab3c4619818611b53b51115a98a2492e0bcf396a44d91ed3   1 953 887 bytes
 ```
 
-for **Commit `21753ec`**. A checksum belongs to one state of the source, not to the project:
+for **Commit `c4de785`**. A checksum belongs to one state of the source, not to the project:
 whoever wants to recompute it builds that commit. `tools/rebuild.sh` does both runs and the
 comparison in one call.
 
