@@ -10,7 +10,8 @@ import org.junit.Test
  *
  * compose hands a key only to the focused node. after a tap nothing is focused (touch mode),
  * and a digit pressed on the dialler went nowhere: reported from a qin f21 on 19.10.2026.
- * the keys are therefore taken at the activity, before compose, by [ScreenKeys].
+ * the keys are therefore taken at the activity, which gets whatever compose left, by
+ * [ScreenKeys].
  */
 class ScreenKeysTest {
 
@@ -21,12 +22,24 @@ class ScreenKeysTest {
     private val home = Quelltext.withoutComments("dev/kicker/hometiles/ui/HomeScreenView.kt")
 
     @Test
-    fun `the activity asks the screen keys before compose`() {
-        val dispatch = Quelltext.cut(base, "override fun dispatchKeyEvent", "super.dispatchKeyEvent")
-        assertTrue(
-            "dispatchKeyEvent does not consult the screen keys before handing on. then a " +
-                "digit without a focused node is lost again.",
-            "screenKeys" in dispatch,
+    fun `the activity asks the screen keys for what compose left`() {
+        listOf("onKeyDown", "onKeyUp").forEach { name ->
+            val handler = Quelltext.cut(base, "override fun $name", "super.$name")
+            assertTrue(
+                "$name does not consult the screen keys before handing on. then a digit " +
+                    "without a focused node is lost again.",
+                "screenKey(event)" in handler,
+            )
+        }
+    }
+
+    @Test
+    fun `dispatchKeyEvent stays untouched`() {
+        // androidx restricts that override to its own library group; lint failed the ci on
+        // it on 19.10.2026, while every local test was green.
+        assertFalse(
+            "dispatchKeyEvent is overridden again. lint rejects it (RestrictedApi).",
+            "override fun dispatchKeyEvent" in base,
         )
     }
 

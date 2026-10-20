@@ -53,8 +53,9 @@ fun searchCharFor(unicodeChar: Int, ctrl: Boolean): Char? {
  *
  * compose hands a key only to the focused node and its parents. after a tap nothing holds
  * the focus (touch mode), so a digit pressed on the dialler went nowhere. registered at the
- * activity, the newest handler first; a handler returns true for what it took, on key down
- * and on key up alike, so nothing below sees half a press.
+ * activity, which gets every key compose did not take, the newest handler first; a handler
+ * returns true for what it took, on key down and on key up alike, so nothing below sees half
+ * a press.
  */
 @Composable
 fun ScreenKeys(enabled: Boolean = true, handler: (KeyEvent) -> Boolean) {

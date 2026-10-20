@@ -40,11 +40,17 @@ abstract class HomeTilesActivity : ComponentActivity() {
         return { screenKeys -= handler }
     }
 
-    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        // a copy: a handler may change the screen, and with it the list.
-        if (screenKeys.toList().asReversed().any { it(event) }) return true
-        return super.dispatchKeyEvent(event)
-    }
+    // the keys compose left over, which is what the screen keys want: a digit nobody focused,
+    // a letter beside the search. not `dispatchKeyEvent`: androidx restricts that override to
+    // its own library group, and lint failed the ci on it (19.10.2026).
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean =
+        screenKey(event) || super.onKeyDown(keyCode, event)
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean =
+        screenKey(event) || super.onKeyUp(keyCode, event)
+
+    // a copy: a handler may change the screen, and with it the list.
+    private fun screenKey(event: KeyEvent): Boolean = screenKeys.toList().asReversed().any { it(event) }
 
     override fun attachBaseContext(newBase: Context) {
         attachedLanguage = ConfigStore.get(newBase).current.appearance.language
