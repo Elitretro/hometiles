@@ -186,6 +186,7 @@
     <string name="orientation_landscape">Quer</string>
     <string name="orientation_landscape_hint">Auf so einem Bildschirm werden die Zeilen flach</string>
     <string name="orientation_auto">Wie das Telefon gehalten wird</string>
+    <string name="orientation_system">Wie das Telefon eingestellt ist</string>
     <string name="appearance_clock_size">Größe der Uhr</string>
     <string name="appearance_clock">Die Uhr</string>
     <string name="clock_off">Keine Uhr</string>

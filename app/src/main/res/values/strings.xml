@@ -187,6 +187,7 @@
     <string name="orientation_landscape">Sideways</string>
     <string name="orientation_landscape_hint">Rows get flat on a screen this small</string>
     <string name="orientation_auto">Follow how you hold it</string>
+    <string name="orientation_system">Follow the phone\'s rotation setting</string>
     <string name="appearance_clock_size">Size of the clock</string>
     <string name="appearance_clock">The clock</string>
     <string name="clock_off">No clock</string>

@@ -12,5 +12,8 @@ object Orientation {
         // SENSOR and not UNSPECIFIED: automatic must also turn while the system rotation
         // lock is off, otherwise the choice has no effect.
         ScreenOrientation.AUTO -> ActivityInfo.SCREEN_ORIENTATION_SENSOR
+        // USER turns with the sensor while the system rotation is on and stands still while
+        // it is locked. issue #1.
+        ScreenOrientation.SYSTEM -> ActivityInfo.SCREEN_ORIENTATION_USER
     }
 }

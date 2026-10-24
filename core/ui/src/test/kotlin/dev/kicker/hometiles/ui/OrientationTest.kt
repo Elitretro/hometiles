@@ -46,8 +46,20 @@ class OrientationTest {
         )
     }
 
+    /**
+     * issue #1: whoever wants the phone's rotation switch to count gets USER. it turns while
+     * the switch is on and stands still while it is locked, which SENSOR above never does.
+     */
     @Test
-    fun `there are exactly three possibilities`() {
-        assertEquals(3, ScreenOrientation.entries.size)
+    fun `system follows the phone's rotation switch`() {
+        assertEquals(
+            ActivityInfo.SCREEN_ORIENTATION_USER,
+            Orientation.requested(ScreenOrientation.SYSTEM),
+        )
+    }
+
+    @Test
+    fun `there are exactly four possibilities`() {
+        assertEquals(4, ScreenOrientation.entries.size)
     }
 }

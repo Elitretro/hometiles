@@ -191,6 +191,7 @@
     <string name="orientation_landscape">Couché</string>
     <string name="orientation_landscape_hint">Les lignes deviennent plates sur un écran si petit</string>
     <string name="orientation_auto">Suivre la façon de tenir le téléphone</string>
+    <string name="orientation_system">Suivre la rotation du téléphone</string>
     <string name="appearance_clock_size">Taille de l’horloge</string>
     <string name="appearance_clock">L’horloge</string>
     <string name="clock_off">Pas d’horloge</string>

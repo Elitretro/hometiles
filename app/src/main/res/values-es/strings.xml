@@ -192,6 +192,7 @@
     <string name="orientation_landscape">Tumbado</string>
     <string name="orientation_landscape_hint">Las filas quedan planas en una pantalla tan pequeña</string>
     <string name="orientation_auto">Seguir cómo lo sostiene</string>
+    <string name="orientation_system">Seguir la rotación del teléfono</string>
     <string name="appearance_clock_size">Tamaño del reloj</string>
     <string name="appearance_clock">El reloj</string>
     <string name="clock_off">Sin reloj</string>

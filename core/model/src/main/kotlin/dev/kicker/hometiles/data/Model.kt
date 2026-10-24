@@ -166,9 +166,12 @@ enum class LabelPosition { BOTTOM_LEFT, BOTTOM_CENTER, TOP_LEFT, HIDDEN }
 @Serializable
 enum class Language { SYSTEM, GERMAN, ENGLISH, FRENCH, SPANISH, ITALIAN }
 
-/** landscape is narrow on three inches, but a phone in a holder may need it. */
+/**
+ * landscape is narrow on three inches, but a phone in a holder may need it. [SYSTEM] obeys
+ * the phone's own rotation switch, [AUTO] turns regardless of it.
+ */
 @Serializable
-enum class ScreenOrientation { PORTRAIT, LANDSCAPE, AUTO }
+enum class ScreenOrientation { PORTRAIT, LANDSCAPE, AUTO, SYSTEM }
 
 @Serializable
 enum class ClockDisplay { OFF, TIME, TIME_DATE, TIME_DATE_WEEKDAY }

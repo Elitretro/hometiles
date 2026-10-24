@@ -1614,6 +1614,7 @@ private fun orientationLabel(orientation: ScreenOrientation): Int = when (orient
     ScreenOrientation.PORTRAIT -> R.string.orientation_portrait
     ScreenOrientation.LANDSCAPE -> R.string.orientation_landscape
     ScreenOrientation.AUTO -> R.string.orientation_auto
+    ScreenOrientation.SYSTEM -> R.string.orientation_system
 }
 
 private fun clockLabel(display: ClockDisplay): Int = when (display) {
