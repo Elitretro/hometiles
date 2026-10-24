@@ -23,6 +23,12 @@ kotlin {
 // hand-through as in :app, since the test moved here with the model.
 tasks.withType<Test> {
     System.getenv("HOMETILES_REAL_CONFIG")?.let { environment("HOMETILES_REAL_CONFIG", it) }
+    // OrientationLabelFitTest reads the app's texts and the font. undeclared, a changed text
+    // left the task up to date and the rule green without running.
+    inputs.dir("../../app/src/main/res").withPropertyName("appTexts")
+        .withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.dir("../ui/src/main/res/font").withPropertyName("fonts")
+        .withPathSensitivity(PathSensitivity.RELATIVE)
 }
 
 dependencies {

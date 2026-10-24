@@ -191,7 +191,7 @@
     <string name="orientation_landscape">Coricato</string>
     <string name="orientation_landscape_hint">Le righe diventano piatte su uno schermo così piccolo</string>
     <string name="orientation_auto">Seguire come lo tiene</string>
-    <string name="orientation_system">Seguire la rotazione del telefono</string>
+    <string name="orientation_system">Come impostato</string>
     <string name="appearance_clock_size">Misura dell’orologio</string>
     <string name="appearance_clock">L’orologio</string>
     <string name="clock_off">Niente orologio</string>
