@@ -1,6 +1,5 @@
 package dev.kicker.hometiles.data
 
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -13,11 +12,7 @@ import kotlinx.serialization.json.JsonPrimitive
  */
 object ConfigTransfer {
 
-    private val json = Json {
-        ignoreUnknownKeys = true
-        encodeDefaults = true
-        prettyPrint = true
-    }
+    private val json = configJson
 
     /**
      * widget ids come from the *old* device's widget host; on the new one they point at

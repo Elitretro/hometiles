@@ -1,6 +1,5 @@
 package dev.kicker.hometiles.data
 
-import kotlinx.serialization.json.Json
 import java.io.File
 
 /**
@@ -14,11 +13,7 @@ import java.io.File
  */
 class ConfigFile(private val file: File) {
 
-    private val json = Json {
-        ignoreUnknownKeys = true
-        encodeDefaults = true
-        prettyPrint = true
-    }
+    private val json = configJson
 
     /**
      * where an unreadable file is rescued to.
