@@ -49,6 +49,40 @@ fun searchCharFor(unicodeChar: Int, ctrl: Boolean): Char? {
 }
 
 /**
+ * the search text while letters come faster than the screen is drawn. see BigSearchField.
+ *
+ * two writers share it: letters typed from the list, and the field once it has the focus.
+ * each built on the value of the last frame, so between two frames one wiped the other's
+ * letter. here both build on [text], and the field's edits count from what the field itself
+ * last held.
+ */
+class TypeAhead(private var text: String) {
+    private var inField = text
+
+    val current: String get() = text
+
+    /** a letter typed from the list. */
+    fun type(letter: Char): String = (text + letter).also { text = it }
+
+    /**
+     * an edit the field reports. letters it added at the end go on top of [text]; anything
+     * else, deleting or typing mid-word, is taken as the field has it. that only happens at
+     * the pace of a hand, when nothing is pending.
+     */
+    fun edited(edited: String): String {
+        text = if (edited.startsWith(inField)) text + edited.removePrefix(inField) else edited
+        inField = edited
+        return text
+    }
+
+    /** the value the screen was drawn with. the field holds it from now on. */
+    fun drawn(value: String) {
+        text = value
+        inField = value
+    }
+}
+
+/**
  * keys that belong to the whole screen: they arrive whether anything has the focus or not.
  *
  * compose hands a key only to the focused node and its parents. after a tap nothing holds

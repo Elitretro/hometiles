@@ -25,7 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -99,12 +99,17 @@ fun BigSearchField(
     // a phone with a keyboard types into the search from anywhere on the screen: on the
     // titan the list has the focus after a scroll, and letters went nowhere. the field
     // takes the focus with the first letter, the rest then arrives there by itself.
-    val latest by rememberUpdatedState(value)
+    //
+    // letters faster than a frame: list and field each built on the last frame's value, so
+    // "fr" read "r" (jelly2 avd, 24.10.2026, in 0.1.3 as well). both go through TypeAhead.
+    // moving the focus later instead crashed: the field started its input with the new
+    // caret on the old text layout.
+    val typeAhead = remember { TypeAhead(value) }
     ScreenKeys(enabled = !inField) { event ->
         val typed = searchCharFor(event.getUnicodeChar(event.metaState), event.isCtrlPressed)
             ?: return@ScreenKeys false
         if (event.action == android.view.KeyEvent.ACTION_DOWN) {
-            onValueChange(latest + typed)
+            onValueChange(typeAhead.type(typed))
             runCatching { caret.requestFocus() }
         }
         true
@@ -144,8 +149,10 @@ fun BigSearchField(
             BasicTextField(
                 value = field,
                 onValueChange = { edited ->
-                    field = edited
-                    if (edited.text != value) onValueChange(edited.text)
+                    val before = typeAhead.current
+                    val text = typeAhead.edited(edited.text)
+                    field = if (text == edited.text) edited else TextFieldValue(text, TextRange(text.length))
+                    if (text != before) onValueChange(text)
                 },
                 singleLine = true,
                 textStyle = TextStyle(
@@ -223,4 +230,7 @@ fun BigSearchField(
             }
         }
     }
+
+    // the field now holds this frame's value, and its next edit counts from there.
+    SideEffect { typeAhead.drawn(value) }
 }
