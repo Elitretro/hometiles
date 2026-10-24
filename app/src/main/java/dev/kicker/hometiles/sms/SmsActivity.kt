@@ -44,6 +44,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.ime
@@ -136,15 +137,17 @@ class SmsActivity : HomeTilesActivity() {
             val holdsSmsRole = remember(resumes.intValue) { repository.isDefaultSmsApp() }
             var messages by remember { mutableStateOf<List<SmsMessage>>(emptyList()) }
             var names by remember { mutableStateOf<Map<String, String>>(emptyMap()) }
-            var openThread by remember { mutableStateOf<Long?>(null) }
+            // saveable: turning the phone rebuilds the screen, and the open conversation with an
+            // unsent draft fell back to the list. issue #1 made turning more common.
+            var openThread by rememberSaveable { mutableStateOf<Long?>(null) }
             // who the first message just went to. see the effect further down.
-            var justSentTo by remember { mutableStateOf<String?>(null) }
+            var justSentTo by rememberSaveable { mutableStateOf<String?>(null) }
             // a conversation with someone there is none with yet. this case used to lead
             // nowhere: the row had no action at all, and an smsto: link landed on the list.
-            var openAddress by remember { mutableStateOf<String?>(null) }
+            var openAddress by rememberSaveable { mutableStateOf<String?>(null) }
             // prefilled when another app handed us a message to send (reject a call with a
             // message). see RespondViaMessageService.
-            var draft by remember { mutableStateOf(intent?.getStringExtra(EXTRA_BODY).orEmpty()) }
+            var draft by rememberSaveable { mutableStateOf(intent?.getStringExtra(EXTRA_BODY).orEmpty()) }
             // `resumes` as the key: on a permanently refused permission this screen sends
             // people into the app settings, and nothing comes back from there.
 var granted by remember(resumes.intValue) { mutableStateOf(repository.hasReadPermission()) }
